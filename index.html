@@ -1,0 +1,408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0060)http://www.cs.rice.edu/~javaplt/411/17-spring/Assignments/7/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>COMP 411 Principles of Programming Languages</title>
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12pt;
+	font-family:Arial, Helvetica, sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	color:black;}
+h2
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	font-size:18.0pt;
+	font-family:"Times New Roman";
+	color:black;
+	font-weight:bold;}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	color:black;}
+a:link, span.MsoHyperlink
+	{color:#0000EE;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#551A8B;
+	text-decoration:underline;
+	text-underline:single;}
+blockquote {margin-left:1in;}
+pre	{margin-left:.5in; font-size:12.0pt;}
+p
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:.5in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	color:black;}
+span.m
+	{mso-style-name:m;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:72553523;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1108105116 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l1
+	{mso-list-id:1736663653;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-914846112 574108716 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l1:level1
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in; margin-left:1in; font-size:12pt; font-family:Arial, Helvetica, sans-serif;}
+ul
+	{margin-bottom:0in; margin-left:1in; font-size:12pt; font-family:Arial, Helvetica, sans-serif;}
+h2	{font-family:Arial, Helvetica, sans-serif;}
+h3	{font-family:Arial, Helvetica, sans-serif;}
+-->
+</style>
+</head><body style="" lang="EN-US" link="#0000ee" vlink="#551a8b" alink="#ff0000" bgcolor="white">
+<div class="Section1"> 
+  <p class="MsoNormal"> 
+    <!--[if !supportEmptyParas]-->
+    &nbsp; 
+    <!--[endif]-->
+    <o:p></o:p></p>
+  <table style="width: 100%;" nosave="" width="100%" border="0" cellpadding="0">
+    <tbody><tr> 
+      <td style="padding: 0.75pt;"><p class="class1"><b><span style="font-size: 36pt; font-family: Arial; color: rgb(51, 102, 255);">Programming 
+        Assignment 7:<br>
+        Machine Level Representation and Management of Jam Data Structures</span></b></p>
+      </td><td style="padding: 0.75pt;"> <p class="MsoNormal">&nbsp;</p></td>
+    </tr>
+  </tbody></table>
+  
+  <h2>Points: 150</h2>
+<h3>Files</h3>
+  
+<p>Start with your solution to <a href="http://www.cs.rice.edu/~javaplt/411/17-spring/Assignments/6">Assignment 6</a>.</p>
+ <p><a href="http://www.cs.rice.edu/~javaplt/411/17-spring/Assignments/7/tests/">Tests</a></p> 
+
+  <p>Except for the preceding tests, the support files provided in the resources for Project 7 at Piazza
+    are identical to those for Assignment 6.
+
+<h3>Overview</h3>
+
+  <p><b>Preparation</b> &nbsp; Create a <tt>programs/7</tt> directory within your 
+  <tt>comp411</tt> directory. All of your files for this assignment should be 
+  stored in the <tt>programs/7</tt> subdirectory.</p>
+  <p><b>Teamwork</b> &nbsp; You are required to do this assignment and all other 
+    programming assignments using pair programming if possible. When you submit your assignment, 
+    indicate the composition of your team (names, student ids, and email addresses) 
+    in your <tt>README</tt> file.</p>
+    <p>If you cannot find a partner and would like one,
+    <!-- send an email to <a href="mailto:comp411@rice.edu">comp411@rice.edu</a>  -->
+    post a message to our Piazza page
+    and we will try to find one for you. Teams of more than two members are not 
+    permitted.</p>
+
+ <h3>Details</h3>
+
+  <p>Like Assignment 6, this is a challenging assignment and will be worth 150 points instead of 100 points.</p>
+
+  <p>
+    Your assignment is to construct a low-level Jam interpreter that does not rely on a control/data stack (as in the Algol-runtime and all modern languages, which may or may not support nested lexical scope) in the
+    implementation language.  Technically, the required part of the assignment does
+    not quite reach this point, but the additional work to get there is conceptually simple even if it is relegated to extra credit to avoid making this assignment a massive software engineering
+    project. In Assignment 6, you wrote a CPS converter for Jam, a converter to a static-distance variant or the symbolic abstract syntax for Jam, and an interpreter for a static-distance abstract syntax for Jam.
+    In this assignment, your primary task
+    is to write a low-level interpreter for the static distance abstract syntax (SDAST) representation of Jam programs.  In Assignment 6, you wrote a high-level interpreter for
+    essentially the same program representation, leveraging the design and some of the code from our earlier interpreter(s) for a conventional symbolic abstract syntax (SymAST) for Jam programs.
+
+    In your low-level interpreter you will represent all Jam data values (JamVals) including environments (embedded in closures and stored in simulated machine registers) as "records" (consecutive words) in a simulated memory consisting
+    of an array of 32-bit words (Java ints) called the "heap".  Each such record consists of a block of words in memory of fixed size (modulo the varying arity of closures) consisting of a
+    header code identifying the kind of the record followed by a fixed set of fields (dependent on the arity of the closure).  In other words, you will implement your own "new" 
+    operations (and accessors) for all Jam run-time objects instead of relying on corresponding Java objects and operations.  All of your Jam run-time objects--including JamVals and activation records--will be stored in 
+    a large array of integers, mimicking machine memory.  In addition, all intermediate JamVals (often
+    called "temporaries" or "temps") will be stored in a separate stack of Java ints.  Similarly, you will maintain your own stack of pointers to activation records (stored in simulated memory)j, the dynamic chain in the Algol runtime.
+    For cps'ed code, this stack only contains a single activation record since there is never a context to which control must be returned.
+    The extra credit part of the assignment consists of writing 
+    a copying (Cheney) garbage collector that moves live objects to a new clean heap when the current (old) heap is exhausted.  For garbage collection to work, you must store all temporary results (JamVals) in the stack
+    of temps.  If you store intermediate JamVals in Java variables in your interpreter (other than the "temps" array),
+    the garbage collector will not find them when it moves objects.
+
+  <p>
+    The assignment is most easily done in two phases: 
+    (i) representing Jam code in a separate code array (akin to code memory in a JVM
+    except that our Jam code will be represented as <tt>SDAST</tt>s instead of Java byte code);
+    and (ii) writing a low-level SDAST interpreter to perform explicit allocation of all
+    Jam objects (including activation records) in a separate memory array simulating a machine level heap, store all intermediate JamVals in
+    a stack "temp" registers, and storing the stack of activation records (static chain in the Algol runtime)
+    in a stack of "context" registers.  The second phase is clearly larger than the first.
+
+  <p>
+    The first phase of the assignment is a short exercise.  In the second phase, the low-level interpreter
+    has the same control structure as the high-level SDAST interpreter from Assignment 6, but it
+    requires a lot of
+    encoding and decoding of Java objects as blocks of ints in the heap. Since it is difficult to avoid
+    making clerical mistakes in the process of writing this code, we strongly recommend
+    that you insert frequent logging/printing statements in your code, which you can later
+    "comment out", to simplify debugging.
+
+    In the first phase, we highly recomned that you simply add a private field to the <tt>SDAST</tt> class <tt>SMap</tt>
+    to hold the index in the code table where that Smap is stored.  In your low-level representation of closure objects,
+    you will identify the code for the closure simply by providing the index of the appropriate
+    SMap in the code table.
+
+    A general principle that we strongly recommend (and
+    you must follow at least loosely to support our unit testing harness) is to create a <tt>SymAST</tt>, a CPSed <tt>SymAST</tt>,
+    and corresponding code-indexed <tt>SDAST</tt>s on demand for every Jam program processed by your interpreter.  Most of this was already done in
+    Assignment 6.
+    (A code-indexed <tt>SDAST</tt> is simply an <tt>SDAST</tt? with extended <tt>SMap</tt> nodes that include an extra field to hold the code index for "this" in the code
+    table.)  The support code provided for Assignment 6 has this structure and we recommend that you retain it.
+    
+    The second phase follows the same high-level design as the high-level SDAST interpreter from
+    Assignment 6, but the details can be grubby.  Here are some observations that may help.
+
+  <p>
+    A compiler stores the intermediate results of chains of primitive operations 
+    in machine registers and if necessary, a spill area in current activation record. 
+    We will simulate this approach by defining a global stack of registers (temporaries)
+    that hold references to the Jam heap (or pseudo-references like a special code
+    for Jam 'null').  A real compiler must do more work because it must determine which temporary 
+    quantities are stored in registers and which are stored in space it reserves 
+    for temporaries in the activation record.</p>
+  <p>
+    To manage our global stack of temporaries, we will push all intermediate results 
+    on this stack while they are active and pop them off when they are no longer 
+    needed. Every pushed temporary must eventually popped to avoid a storage leak. 
+    It is easy to write this code such that push and pop operations are 
+    always paired in the same procedure of your interpreter. This stack plus the stack of pointers
+    to pending activation records (our environment stack) constitute the root set for
+    garbage collection.  In compiled code with an algol-like runtime, these two stacks are merged to
+    form a single control and data stack.
+  <p>
+    Note that we do not need to allocate any space in activation records for temporaries since we have a dedicated
+    global stack of registers for this purpose.  We recommend representing this stack of registers
+    as an ArrayList.  The element type depends on the interpreter.  For the initial high-level static distance
+    coordinate interpreter, the elements have type <tt>JamVal</tt>.  For the final low-level static distance
+    interpreter that uses an explicit heap memory array, the elements have type <tt>Integer</tt> corresponding to
+    indices in the heap (or negative pseudo-indices used to represent the constants <tt>null</tt>, <tt>unit</tt> <tt>true</tt>,
+    and <tt>false</tt>.
+  <p>
+    To help you aggressively test the various incremental stages of your program, we are providing 
+    a test program called <tt>sieve</tt> in the 
+    <a href="http://www.cs.rice.edu/~javaplt/411/17-spring/Assignments/7/tests/">tests</a> subdirectory. 
+    We also recommend converting some test programs from previous assignments to 
+    the syntax required for this assignment (recall that <tt>let</tt> is not recursive 
+    and <tt>letrec</tt> only accepts <tt>map</tt>s as right-hand-sides. To execute 
+    the sieve program, you will have to make one change to your interpreter, namely 
+    eliminating the run-time check to confirm that the second argument to <tt>cons</tt> 
+    is a list. In this program, the second argument is often a thunk (<tt>map</tt> 
+    of no arguments).</p>
+
+  <p><b>Phase Specifications</b></p>  
+
+  <p><strong>Phase 1.</strong> &nbsp; In the first phase, you must write a new Jam interpreter for <tt>SDAST</tt>s that is a modest
+    revision of the interpreter from Assignment 6.  The only changes are that:
+    <ul>
+      <li>you will add a code array representation for all of the maps within the program to be interpreted loosely imitating the compiled code for
+	the program where each map is a subroutine located a distinct address in code memory and represent closures using this code array; and</li>
+      <li>revise the representation of closures to use indices into the code array in place of <tt>SDAST</tt> representations of the code bodies.</li>
+    </ul>
+  <p>
+    To support the idea that each map in the input program corresponds to a compiled subroutine, you must add a <tt>private int</tt> field named
+    <tt>codeIndex</tt> to the <tt>SMap</tt> class and bind this field in each <tt>SMap</tt> instance that you create when performing conversion to
+    static distance form.  The first map encountered in converting the program will have index 0 (since Java arrays are indexed starting at 0)
+    and each subsequent map will be inserted in the next open slot in the code array table.  This table will be implemented
+    simply as a Java array of type <tt>SDAST[]</tt>.  You can build the contents of the array as a Java <tt>ArrayList<SDAST></tt> so it can
+    be easily constructed as a Java <tt>List</tt> and subsequently accessed efficiently using randomly access.  This code array will help support
+    the explicit representation of closures including the code body for the closure (identified by a codeIndex)
+    in a memory array in Phase 2.
+  </p>
+  <p>The code array loosely mimics the compiled code for the program.  Since we are interpreting rather than compiling Jam programs,
+    we will still represent program expressions as  <tt>SDAST</tt>s, but we will also support referring to <tt>map</tt> expressions
+    in the program using integer indices.  Each map expression will be represented by an index into
+    a code array (starting with index 0 since Java array indices start at 0) of type <tt>SDAST</tt>.  Of course, the type of a map
+    expression in the <tt>SDAST</tt> is still <tt>SMap</tt>.  
+  </p>
+  <p>Modify the representation of closures in your static distance interpreter 
+    from <a href="http://www.cs.rice.edu/~javaplt/411/21-spring/Assignments/6/">Assignment 6</a> so that the code portion is represented 
+    by an integer index. (When you build a closure for a <tt>map <i>M</i></tt>, store the integer 
+    index for <tt><i>M</i></tt> in the code field instead <tt><i>M</i></tt> itself.)</p>
+  <p>
+    Note: we could retain the exact representation of <tt>SDAST</tt>s from Assignment 6 (instead of slightly modifying the definition
+    of <tt>SMap</tt>) nodes by defining a subclass of <tt>SMap</tt> (named <tt>IndexedSMap</tt>) that adds the
+    <tt>codeIndex</tt> field.  Then the revised
+    interpreter would require an <tt>SDAST</tt> with all maps represented by <tt>IndexedSMap</tt> nodes.  In this assignment, we are ultimately
+    interested in <tt>SDAST</tt>s that are indexed so we simply revise the definition of <tt>SMap</tt>.  Since the added indices are merely
+    information annotating <tt>SMap</tt> nodes, the static distance interpreter from Assignment 6 will still work, oblivious to the additional
+    information.
+  <p>
+    You can test your revised static distance coordinate interpreter by comparing its behavior with the interpreter from Assignment 6.
+  <p>   
+    Since Java does not perform tail-call optimization, the interpreters in this Assignment can create very deep stacks.
+    To run a really hard test for the class solution (involving the a stream-based prime sieve function), we had to use a stack size
+    of 512M, which is enormous.  For this assignment, we recommend raising the default stack size to 64MB.  Tail-call optimization matters!
+  </p>
+
+  <p><strong>Phase 2.</strong> &nbsp; In the second (much more challening) phase, you must modify the representation of JamVals and activation
+    records so that all Jam objects are represented by blocks in an explicit heap memory array.  In short, you must reimplement every "new"
+    operation for a <tt>JamVal</tt> or activation record
+    performed by your static distance Jam interpreter as the allocation of a block of integer cells from your heap array.  You must also re-implement
+    the accessors that extract data from each form of <tt>JamVal</tt>. We mandate
+    the following representation of <tt>JamVal</tt>s and activation records in your memory array so that we can easily test your program.
+    With the exception of the
+    special constants <tt>null</tt> (the empty list), <tt>unit</tt> <tt>true</tt>, <tt>false</tt>, and all Jam primitive functions (<tt>PrimFun</tt>s), every <tt>JamVal</tt> will be represented
+    by the index of a block of two or more cells where the first cell holds a tag identifying the form of data represented.  The constants
+    <tt>null</tt>, <tt>unit</tt>, <tt>true</tt>, and <tt>false</tt> are represented by the pseudo-indices (<tt>int</tt> values) -1, -2, -3, and -4,
+    respectively.  Similarlly, the primitive functions <tt>number?</tt>, <tt>function?</tt>, <tt>list?</tt>, <tt>null?</tt>, <tt>cons?</tt>, <tt>ref?</tt>,
+    <tt>arity</tt>, <tt>cons</tt>, <tt>first</tt>, and <tt>rest</tt>, are represented by the pseudo-indices (<tt>int</tt> values)
+    -5, -6, -7, -8, -9, -10, -11, -12, -13, and -14.  Note that you can use a simple arithmetic transformation (linear function) to convert these codes
+    to the indices 0, 1, ..., 9, which are ideal for Java case statements which can replace the trivial <tt>PrimFunVisitor</tt> that dispatch on each different primitive function in your high-level
+    <tt>SDAST</tt>interpreter.
+    </p>
+
+  <p>Excluding the constants <tt>null</tt>, <tt>unit</tt>, <tt>true</tt>, and <tt>false</tt>, and the primitive functions given above,
+    there are five different forms of “new” <tt>JamVal</tt> (and activation record)
+    operations in your Jam interpreter:</p>
+  <ul>
+    <li>the construction of Jam <tt>int</tt> constants</li>
+    <li>the construction of <tt>cons</tt> nodes</li>
+    <li>the construction of <tt>ref</tt> nodes</li>
+    <li>the construction of closures, and </li>
+    <li>the construction of activation records (the records in your static distance 
+      representation of environments).</li>
+  </ul>
+  <p>The tag values for <tt>int</tt> constants, <tt>cons</tt> nodes, <tt>ref</tt> nodes, closures, and activation records are
+    1, 2, 3, 4, and 5, respectively.  Note that we have excluded the value 0 from the set of legal tag values to help you debug your
+    code.  When you create your heap array, we recommend that you initialize it to zero.  If your interpreter ever encounters 0 as a
+    tag value, you know that you have encountered an illegal <tt>JamVal</tt> or activation record (probably caused by a faulty pointer
+    [index into your explicit memory array]).
+  <p>
+    Each of the constructed node types (excluding <tt>null</tt>, <tt>unit</tt>, <tt>true</tt>, <tt>false</tt>) has one of more fields following it:
+    <ul>
+      <li>The field following a Jam <tt>int</tt> tag (value = 1) is simply the value of the integer constant (which must be a Java <tt>int</tt>).</li>
+      <li>The two fields following a Jam <tt>cons</tt> tag (value = 2) are simply the values of the <tt>first</tt> and <tt>rest</tt> fields of
+	the <tt>cons</tt> contruction.</li>
+      <li>The field following a <tt>ref</tt> tag (value = 3) is simply the contents of the ref cell.</li>
+      <li>The two fields following a closure tag (value = 4) are the <tt>codeIndex</tt> of the corresponding <tt>SMap</tt> in the code array and
+	the activation record representing the closure environment.</li>
+      <li>The N+2 fields following an activation record tag (value = 5) are the pointer to the parent activation record (static link), the number N of new bindings
+(an int) and the values of the N variables bound in the activation record.
+    </ul>
+    <p>Note that <tt>JamVal</tt>s (other than the special constants <tt>null</tt>, <tt>unit</tt>, <tt>true</tt>, <tt>false</tt> and primitive functions) are represented by the indices
+	of (pointers to) the corresponding representations in the memory array.  The special constants <tt>null</tt>, <tt>unit</tt>, <tt>true</tt>, <tt>false</tt>, and primitive functions)
+	are represented by the corresponding pseudo-indices which are <i>negative</i> integer tags.
+    <p>The representations of the special constants are disjoint from the representations of all other JamVals, which are non-negative indices in
+      (pointers into) the heap memory array.
+    </p>
+    <p>Your interpreter should simply abort any computation that overflows the heap by throwing an EvalException with an appropriate error message.</p>
+
+  <p>For Assignment 7, use the same constructor interface for the <tt>Interpreter</tt> class as in Assignment 6.  Simply define a <tt>public static final int</tt>
+     constant (say <tt>HEAPSIZE</tt>) as the default size for your heap.  I suggest the value <tt>(int)Math.power(2,18)</tt>, or equivalently <tt>1&lt;&lt;18</tt>.
+     If you do the extra credit part of the assignment,
+     you will have to add constructors that include heapsize as a second parameter as described below.  We need this <tt>Interpreter</tt>
+     interface to test your garbage collector.
+
+  <p>Our test code will assume that your <tt>Interpreter</tt> class supports all of the evaluation methods from Assignment 6. 
+
+  <p>You must also add a method <tt>int[] getMemory() </tt>to 
+    the <tt>Interpreter</tt> class that returns your Java <tt>int[]</tt> memory array simulating a Jam heap which must be allocated as part of initalizing your <tt>Interpreter</tt>.</p>
+  <p>The autograding program will use the memory returning operations provided 
+    as part of the top level interface to confirm that you are using memory to 
+    represent Jam values and check that you are representing Jam values correctly.  For any <tt>Interpreter</tt> object <tt>interp</tt>,
+   <tt>interp.getMemory()</tt> must be well-defined; the <tt>getMemory()</tt> method should never return <tt>null</tt>.</p>
+
+  <p>Note that your top-level evaluation methods must "decode"
+    your low level Jam data representations into high level Jam data values with 
+    exactly the same representation in Java as in previous assignments so that the visible behavior of your interpreter
+    (modulo a sufficiently large heap and significanlty execution speed slowdown) is unaffected by using an explicit heap memory array.
+
+  <p>The interface that your <tt>Interpreter</tt> class must support is the public interface from Assignment 7 plus the following 
+    <pre>
+    public static final int HEAPSIZE = ... < we recommend 1&lt;&lt;18 > ;
+
+    /** Retursn the heap. */
+    public int[] getMemory(); 
+
+    /** Returns the JamVal result (decoding the heap-index or pseudo-index) of evaluating the embedded SDAST program using the low-level interpreter */
+    public JamVal ramSDEval();
+
+    /** Returns the JamVal result (decoding the heap index or pseudo-index) of evaluating the SDAST representation of the embedded program converted to CPS
+      * using the low-level interpreter. */
+    public JamVal ramSDCpsEval();
+
+    Note that you have multiple ways to test that your low-level interpreter computes the same answers as your high-level interpreters.
+    </pre>	
+  </p>
+
+   <h3>Extra Credit Part A</h3>
+
+ <p>You can earn 100 points extra credit by implementing a Cheney copying collector for your heap to reclaim 
+    unused storage in your heap array.  You should allocate a new memory heap array (of the specified size) for
+    each collection instead of using alternating semi-spaces.</p>
+ <p>The only roots for garbage collection are the contents of the two stacks maintained by the low-level interpreter: the stack of environments (dynamic chain in an algol-runtime) and the stack of
+    temporaries (extra cells in activation records in an algol-runtime).  This approach does not presume that programs have been converted to CPS.  But note that conversion to CPS plus
+    some clever consolidation of all nested lets yields a program that only requires a single environment address (pointer) instead of a stack.  The environment pointer is the beginning of the static chain (of activation records)
+    defining the current environment.  But the static chain only has one activation record since every activation record replaces the preceding one when all program defined funcion calls are in tail position.
+   Since all temporary values are stored in the temporary register stack, we do not need to apply the CPS transformation to Jam programs in order to support garbage collection. In practice, transforming a program to this form (a single
+   environment pointer is probably not a good idea; using an algol-runtime (with tail call optimization) looks cleaner and much more transparent from a debugging perspective.</p>    
+ <p>In your <em>Interpreter</em> &nbsp; class, create a two argument constructor corresponding to each <tt>Interpeter</tt> constructor in
+    your solution to the standard part of Assignment 7. The second argument is an <tt>int</tt> specifying the number of cells in
+    your memory array.  This interface supports testing your Interpeter (and embedded garbage collector) on smaller heap sizes that the default which is quite large.  </p>
+ <p>Cheney collection is easy to code but may be hard to debug.  We don't want you to spend long hours debugging your Cheney collector if you have
+    trouble getting it to work.  Remember this is an extra credit part of the assignment.</p>
+
+  <h3>Extra Credit Part B</h3>
+
+      <p>You can earn 50 points extra credit if your low-level SD intepreter (running without GC) can correctly evaluate CPSed code.  In every program evaluation, the size of the environment stack
+	your low-level SD interpreter should never exceed the lexical depth of the executing program.  In real world language implmentations it is straightforward to transform programs to eliminate
+	nested scope (lexical depth beyond 1), which is discussed in supplemental class <a href="http://www.cs.rice.edu/~javaplt/411/21-spring/Lectures/31.pdf">Lecture 31</a>
+	should not be surprising given the both C and Java (ingoring inner classes) impose this restriction on all programs.  But not
+	mainstream language forces programs to conform to CPS.  A comoiler of course can tranform programs to CPS as well as collapsing lexical score to global and local which only requires one activation record         of varying size.
+	
+	You do not need to anything to qualify for these extra
+	credit points other than implementing <tt>sdCpsEval</tt> as instructed above and correctly implement CPS conversion as specificed in Assignment 6.</p>
+
+ <div class=Section1> 
+
+  <h3><b>Testing</b></h3>
+
+  <p>You are expected to write unit tests for all of your non-trivial
+    methods or functions <em> and submit your test code as part of your program</em>.
+    For more information, refer back to <a href="../1/index.html">Assignment 1</a>.</p>
+<div class=Section1>
+</div>
+</body></html>  
