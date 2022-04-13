@@ -1829,173 +1829,58 @@ class Parser {
               new App(k, new SymAST[] { new App(f,new SymAST[]{x,y}) })));
   }
 
+  /** Visitor class that implements the reshape operation (a transformation on SymASTs) described as part of CPS conversion. */
   class Reshape implements SymASTVisitor<SymAST> {
     
     Reshape() {}
-
-    public SymAST forIntConstant(IntConstant host)   { return host; };
-    public SymAST forBoolConstant(BoolConstant host) { return host; };
-    public SymAST forEmptyConstant(EmptyConstant host) { return host; };
-    public SymAST forVariable(Variable host)      { return host; }
-    public SymAST forPrimFun(PrimFun host)           { return primTable.get(host); }
-    public SymAST forUnOpApp(UnOpApp u) { 
-      SymAST arg = (SymAST) u.arg();
-      return new UnOpApp(u.rator(), arg.accept(this));
-    }
-    public SymAST forBinOpApp(BinOpApp b) {
-      SymAST arg1 = (SymAST) b.arg1();
-      SymAST arg2 = (SymAST) b.arg2();
-      return new BinOpApp(b.rator(), arg1.accept(this), arg2.accept(this));
-    }
     
-    public SymAST forApp(App a) {
-      if (! (a.rator() instanceof PrimFun))
-        throw new ParseException("non primitive application `" + a + "' passed to Reshape");
-      SymAST[] args = (SymAST[]) a.args();
-      int n = args.length;
-      SymAST[] newArgs = new SymAST[n];
-      for (int i = 0; i < n; i++) newArgs[i] = args[i].accept(this);
-      App app = new App(a.rator(), newArgs);
-      if (a.rator() == ArityPrim.ONLY) {
-        return new BinOpApp(BinOpMinus.ONLY, app, new IntConstant(1));
-      }
-      else return app;
-    }
+    public SymAST forIntConstant(IntConstant host)     { return null; /* STUB */ };
+    public SymAST forBoolConstant(BoolConstant host)   { return null; /* STUB */ };
+    public SymAST forEmptyConstant(EmptyConstant host) { return null; /* STUB */ };
+    public SymAST forVariable(Variable host)           { return null; /* STUB */ }
+    public SymAST forPrimFun(PrimFun host)             { return null; /* STUB */ }
     
-    public SymAST forMap(Map m) { 
-      
-      int n = m.vars().length;
-      Variable[] newVars = new Variable[n+1];
-      Variable newVar = genVariable();
-      for (int i = 0; i < n; i++) newVars[i] = m.vars()[i];
-      newVars[n] = newVar;
-      return new Map(newVars, convertToCPS(m.body(), newVar));
-    }
+    public SymAST forUnOpApp(UnOpApp u)                { return null; /* STUB */ }
     
-    public SymAST forIf(If i) { 
-      SymAST test = (SymAST) i.test();
-      SymAST conseq = (SymAST) i.conseq();
-      SymAST alt = (SymAST) i.alt();
-      return new If(test.accept(this), conseq.accept(this), alt.accept(this));
-    }
+    public SymAST forBinOpApp(BinOpApp b)              { return null; /* STUB */ }
     
-    public SymAST forLet(Let l) {
-      int n = l.defs().length;
-      Def[] newDefs = new Def[n];
-      
-      for (int i = 0; i < n; i++) {
-        Def oldDef = l.defs()[i];
-        newDefs[i] = new Def(oldDef.lhs(), oldDef.rhs().accept(this));
-      }
-      return new Let(newDefs, l.body().accept(this));
-    }
+    public SymAST forApp(App a)                        { return null; /* STUB */ }
     
-    /* Note the repeated code in forLet and forLetRe; should refactor. */
+    public SymAST forMap(Map m)                        { return null; /* STUB */ }
     
-    public SymAST forLetRec(LetRec l) {
-      int n = l.defs().length;
-      Def[] newDefs = new Def[n];
-      
-      for (int i = 0; i < n; i++) {
-        Def oldDef = l.defs()[i];
-        newDefs[i] = new Def(oldDef.lhs(), oldDef.rhs().accept(this));
-      }
-      return new LetRec(newDefs, l.body().accept(this));
-    }
-    public SymAST forLetcc(Letcc host) { 
-      throw new CPSException("Attempt to reshape the letcc expression " + host);
-    }
-    public SymAST forBlock(Block b) {
-      int n = b.exps().length;
-      SymAST[] exps = (SymAST[]) b.exps();
-      SymAST[] newExps = new SymAST[n];
-      for (int i = 0; i < n; i++) newExps[i] = exps[i].accept(this);
-      
-      return new Block(newExps);
-    }
+    public SymAST forIf(If i)                          { return null; /* STUB */ }
+    
+    public SymAST forLet(Let l)                        { return null; /* STUB */ }
+    
+    public SymAST forLetRec(LetRec l)                  { return null; /* STUB */ }
+    
+    /** The construct is illegal in reshaped code, but this method is required by the type system. */
+    public SymAST forLetcc(Letcc host)                 { return null; /* STUB */ }
+    
+    public SymAST forBlock(Block b)                    { return null; /* STUB */ }
   }
   
-  static Boolean TRUE = Boolean.TRUE;
-  static Boolean FALSE = Boolean.FALSE;
-  
-  /** Visitor class representing an operation that determines if an expression only
-   *  involves local allocation; TRUE means it requires no external allocation 
-   */
+  /** Visitor class representing an operation that determines if an expression only peforms local allocation when evaluated;
+    * TRUE means it only performs local allocation. */
   class IsSimple implements SymASTVisitor<Boolean> {
     
-    public Boolean forIntConstant(IntConstant i)   { return TRUE; }
-    public Boolean forEmptyConstant(EmptyConstant n) { return TRUE; }
-    public Boolean forBoolConstant(BoolConstant b) { return TRUE; }
-    public Boolean forVariable(Variable v) { return TRUE; }
-    public Boolean forPrimFun(PrimFun f)  { return TRUE; }  
- 
-    public Boolean forUnOpApp(UnOpApp u) { 
-      SymAST arg = (SymAST) u.arg();
-      return arg.accept(this); 
-    }  
-
-    public Boolean forBinOpApp(BinOpApp b) {
-      SymAST arg1 = (SymAST) b.arg1();
-      SymAST arg2 = (SymAST) b.arg2();
-      if ((arg1.accept(this) == TRUE) && (arg2.accept(this) == TRUE)) return TRUE;
-      return FALSE;
-    } 
- 
-    public Boolean forApp(App a) { 
-      if (! (a.rator() instanceof PrimFun)) return FALSE;
-      SymAST[] args = (SymAST[]) a.args();
-      int n = args.length;
-      for (int i = 0; i < n; i++) {
-        if (args[i].accept(this) == FALSE) return FALSE;
-      }
-      return TRUE; 
-    }
+    public Boolean forIntConstant(IntConstant i)     { return null; /* STUB */ }
+    public Boolean forEmptyConstant(EmptyConstant n) { return null; /* STUB */ }
+    public Boolean forBoolConstant(BoolConstant b)   { return null; /* STUB */ }
+    public Boolean forVariable(Variable v)           { return null; /* STUB */ }
+    public Boolean forPrimFun(PrimFun f)             { return null; /* STUB */ } 
     
-    public Boolean forMap(Map m) { return TRUE; }
+    public Boolean forUnOpApp(UnOpApp u)             { return null; /* STUB */ }   
+    public Boolean forBinOpApp(BinOpApp b)           { return null; /* STUB */ }
+    public Boolean forApp(App a)                     { return null; /* STUB */ } 
+    public Boolean forMap(Map m)                     { return null; /* STUB */ }
+    public Boolean forIf(If i)                       { return null; /* STUB */ } 
+    public Boolean forLet(Let l)                     { return null; /* STUB */ }
+    public Boolean forLetRec(LetRec l)               { return null; /* STUB */ }
     
-    public Boolean forIf(If i) {
-      SymAST test = (SymAST) i.test();
-      SymAST conseq = (SymAST) i.conseq();
-      SymAST alt = (SymAST) i.alt();
-      if ((test.accept(this) == TRUE) && (conseq.accept(this) == TRUE) && (alt.accept(this) == TRUE)) 
-        return TRUE;
-      else return FALSE;
-    }
-    
-    public Boolean forLet(Let l) { 
-      Def[] defs = l.defs();
-      int n = defs.length;
-      
-      for (int i = 0; i < n; i++) {
-        SymAST rhs = (SymAST) defs[i].rhs();
-        if (rhs.accept(this) == FALSE) return FALSE;
-      }
-      if (((SymAST) l.body()).accept(this) == FALSE) return FALSE;
-      return TRUE;
-    } 
-    
-    public Boolean forLetRec(LetRec l) {
-      Def[] defs = l.defs();
-      int n = defs.length;
-      
-      for (int i = 0; i < n; i++) {
-        SymAST rhs = (SymAST) defs[i].rhs();
-        if (rhs.accept(this) == FALSE) return FALSE;
-      }
-      if (((SymAST) l.body()).accept(this) == FALSE) return FALSE;
-      return TRUE;
-    }
-    
-    public Boolean forLetcc(Letcc l) { return FALSE; }
-    
-    public Boolean forBlock(Block b) {
-      SymAST[] exps = (SymAST[]) b.exps();
-      int n = exps.length;
-      for (int i = 0; i < n; i++) {
-        if (exps[i].accept(this) == FALSE) return FALSE;
-      }
-      return TRUE;
-    }
+    /* A letcc construction is an illegal input to this operation. */ 
+    public Boolean forLetcc(Letcc l)                 { return null; /* STUB */ }
+    public Boolean forBlock(Block b)                 { return null; /* STUB */ }
   }
   
   /** Reshapes the arguments and adds the continuation as the final argument */
@@ -2010,178 +1895,35 @@ class Parser {
   
   /* Convert exp,cont to correponding CPS'ed program */ 
   public SymAST convertToCPS(SymAST exp, SymAST cont) {
-    if (exp.accept(isSimple) == TRUE) 
-      return new App(cont, new SymAST[] { exp.accept(reshape) });  
+    if (exp.accept(isSimple)) return new App(cont, new SymAST[] { exp.accept(reshape) });  
     return exp.accept(new ConvertToCPS(cont));
   }
-      
-  /** Converts a non-simple expression to CPS form */
+  
+  /** An instance converts a non-simple expression to CPS form */
   class ConvertToCPS implements SymASTVisitor<SymAST> {
     
     SymAST cont;
     
     ConvertToCPS(SymAST c) { cont = c; }
     
-    /* None of the following block of methods should ever be executed if the host is not simple. */
-    public SymAST forIntConstant(IntConstant i) {  return new App(cont, new SymAST[] {i}); }
-    public SymAST forEmptyConstant(EmptyConstant n) { return new App(cont, new SymAST[] {n}); }
-    public SymAST forBoolConstant(BoolConstant b) { return new App(cont, new SymAST[] {b}); }
-    public SymAST forVariable(Variable v) { return new App(cont, new SymAST[] {v}); }
-    public SymAST forPrimFun(PrimFun f) { 
-      return new App(cont, new SymAST[] {f.accept(reshape)}); 
-    }
-    public SymAST forMap(Map m) { 
-      return new App(cont, new SymAST[] {m.accept(reshape)});
-    }
+    public SymAST forIntConstant(IntConstant i) { return null; /* STUB */ }
+    public SymAST forEmptyConstant(EmptyConstant n) { return null; /* STUB */ }
+    public SymAST forBoolConstant(BoolConstant b) { return null; /* STUB */ }
+    public SymAST forVariable(Variable v) { return null; /* STUB */ }
+    public SymAST forPrimFun(PrimFun f) { return null; /* STUB */ }
+    public SymAST forMap(Map m){ return null; /* STUB */ }
     
-    public SymAST forUnOpApp(UnOpApp u) {
-      SymAST arg = (SymAST) u.arg();
-      Variable v1 = genVariable();
-      SymAST body = new UnOpApp(u.rator(), v1);
-      if (arg.accept(isSimple) == TRUE)
-        return new App(cont, new SymAST[] {u.accept(reshape)});
-      else 
-        return convertToCPS(new Let(new Def[] {new Def(v1, arg)}, body), cont);
-    }
-    
-    public SymAST forBinOpApp(BinOpApp b) {
-      SymAST arg1 = (SymAST) b.arg1();
-      SymAST arg2 = (SymAST) b.arg2();
-      Variable v1 = genVariable();
-      Variable v2 = genVariable();
-      SymAST body = new BinOpApp(b.rator(), v1, v2);
-      if (arg1.accept(isSimple) == TRUE && arg2.accept(isSimple) == TRUE)
-        return new App(cont, new SymAST[] { b.accept(reshape) });
-      else 
-        return convertToCPS(new Let(new Def[] {new Def(v1, arg1), new Def(v2, arg2)}, body), cont); 
-    }
-    
-    public SymAST forApp(App a) {
-      
-      SymAST rator = (SymAST) a.rator();
-      SymAST[] args = (SymAST[]) a.args();
-      int n = args.length;
-      
-      /* Map is a special case of a simple expression  (Simplification not in the rules!) */
-      if (rator instanceof Map) {
-        Map m = (Map) rator;
-        Variable[] vars = m.vars();
-        if (vars.length != n) throw new CPSException("map `" + m + "' applied to only " + n + " arguments");
-        if (n == 0) return convertToCPS(m.body(), cont);
-        Def[] newDefs = new Def[n];
-        for (int i = 0; i < n; i++) newDefs[i] = new Def(vars[i], args[i]);
-        return convertToCPS(new Let(newDefs, m.body()), cont);
-      } 
-      
-      if (rator.accept(isSimple) == TRUE) { 
-        boolean allArgsSimple = true;
-        for (int i = 0; i < n; i++) {
-          if (args[i].accept(isSimple) == FALSE) {
-            allArgsSimple = false;
-            break;
-          } 
-        }
-        
-        if (allArgsSimple)  { // all args only perform local allocation
-//          System.err.println("Simple Args are: " + ToString.toString(args, ","));
-          SymAST[] newArgs = reshape(args,cont);
-          return new App(rator.accept(reshape), newArgs);
-        }
-        
-        /* Some arguments are not simple. The rator is simple but not a map, and some argument is non-simple. */
-        Variable[] newVars = new Variable[n];
-        Def[] newDefs = new Def[n];
-        for (int i = 0; i < n; i++) {
-          Variable var = genVariable();
-          newVars[i] = var;
-          newDefs[i] = new Def(var, args[i]);
-        }
-        return convertToCPS(new Let(newDefs, new App(rator,newVars)), cont);
-      }
-      
-      /* The rator is not simple. */
-      Variable newVar = genVariable();
-//      return convertToCPS(new Let(new Def[] {new Def(newVar, rator)}, new App(newVar, args)), cont);
-
-      Variable[] newVars = new Variable[n];
-      Def[] newDefs = new Def[n+1];
-      for (int i = 0; i < n; i++) {
-        Variable var = genVariable();
-        newVars[i] = var;
-        newDefs[i+1] = new Def(var, args[i]);
-      }
-      newDefs[0] = new Def(newVar, rator);
-      return convertToCPS(new Let(newDefs, new App(newVar,newVars)), cont);
-    }
-       
-    public SymAST forIf(If i) {
-      SymAST test = (SymAST) i.test();
-      SymAST conseq = (SymAST) i.conseq();
-      SymAST alt = (SymAST) i.alt();
-      if (test.accept(isSimple) == TRUE)
-        return new If(test.accept(reshape), convertToCPS(conseq, cont), convertToCPS(alt, cont));
-
-      Variable newVar = genVariable();
-      return convertToCPS(new Let(new Def[] {new Def(newVar,test)}, new If(newVar,conseq,alt)), cont);
-    }
-    
-    public SymAST forLet(Let l) {
-      Def[] defs = l.defs();
-      int n = defs.length; 
-      SymAST rhs0 = (SymAST) defs[0].rhs();
-      Variable lhs0 = defs[0].lhs();
-      
-      if (rhs0.accept(isSimple) == TRUE) {
-        Def[] newDefs = new Def[]{ new Def(lhs0, rhs0.accept(reshape)) };
-        SymAST newBody;
-        if (n == 1) newBody = l.body();
-        else {
-          Def[] remDefs = new Def[n-1];
-          for (int i=0; i < n-1; i++) remDefs[i] = defs[i+1];
-          newBody = new Let(remDefs, l.body());
-        }
-        return new Let(newDefs, convertToCPS(newBody, cont));
-      }
-      /* rhs0 is not simple */
-      if (n == 1)  /* degenerate case */
-        return convertToCPS(rhs0, new Map(new Variable[] { lhs0 }, convertToCPS(l.body(), cont)));
-  
-      /* n > 1 */
-      Def[] newDefs = new Def[n-1];
-      for (int i = 0; i < n-1; i++) newDefs[i] = defs[i+1];
-      SymAST newLet = new Let(newDefs, l.body());
-      return convertToCPS(rhs0, new Map(new Variable[] { lhs0 }, convertToCPS(newLet, cont)));
-    }
-    
-    /* Assumes body is non-simple. Otherwise 'this' would be simple since RHSs are all maps. */
-    public SymAST forLetRec(LetRec l) { 
-      Def[] defs = l.defs();
-      int n = defs.length;
-      Def[] newDefs = new Def[n];
-      for (int i = 0; i < n; i++) newDefs[i] = new Def(defs[i].lhs(), defs[i].rhs().accept(reshape));
-      return new LetRec(newDefs, convertToCPS(l.body(), cont));
-    } 
-    
-    public SymAST forLetcc(Letcc l) {
-      SymAST newBody  = convertToCPS(l.body(), cont);
-      Variable v1 = genVariable();
-      Variable v2 = genVariable();
-      SymAST capturedCont = new Map(new Variable[]{v1,v2}, new App(cont, new SymAST[]{v1}));
-      return new Let(new Def[] {new Def(l.var(), capturedCont)}, newBody);
-    } 
-    
-    public SymAST forBlock(Block b) {
-      SymAST[] exps = (SymAST[]) b.exps();
-      int n = exps.length;
-      Def[] newDefs = new Def[n];
-      for (int i = 0; i < n; i++) 
-        newDefs[i] = new Def(genVariable(), exps[i]);
-      Variable lastVar = newDefs[n-1].lhs();
-      return convertToCPS(new Let(newDefs,lastVar), cont);
-    }
+    public SymAST forUnOpApp(UnOpApp u) { return null; /* STUB */ }
+    public SymAST forBinOpApp(BinOpApp b) { return null; /* STUB */ }
+    public SymAST forApp(App a) { return null; /* STUB */ }     
+    public SymAST forIf(If i) { return null; /* STUB */ }
+    public SymAST forLet(Let l) { return null; /* STUB */ }
+    public SymAST forLetRec(LetRec l) { return null; /* STUB */ } 
+    public SymAST forLetcc(Letcc l) { return null; /* STUB */ }
+    public SymAST forBlock(Block b) { return null; /* STUB */ }
   }
 }
-
+    
 /** A visitor class supporting the Parser that performs syntax checking and unshadowing of SymASTs.  It returns a SymAST 
   * (with new variable names) unless there is a syntax error. On a syntax error, it throws a SyntaxException. */
 class CheckVisitor implements SymASTVisitor<SymAST> {
