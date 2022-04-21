@@ -3,10 +3,10 @@ import junit.framework.TestCase;
 import java.io.*;
 
 /** Testing framework for Assignment 7 Jam **/
-public class Assign7Test extends TestCase {
+public class XCAssign7Test extends TestCase {
    protected int defaultSize = 10000;
 
-  public Assign7Test (String name) {
+  public XCAssign7Test (String name) {
     super(name);
   }
   
@@ -74,16 +74,16 @@ public class Assign7Test extends TestCase {
     System.out.println("\nStarting " + name + " with heapsize = " + hs);
     evalCheck(name, answer, program, hs);
     System.err.println("evalCheckComplete");
-//    cpsEvalCheck(name, answer, program, hs);
-//    System.err.println("cpsEvalCheckComplete");
+    cpsEvalCheck(name, answer, program, hs);
+    System.err.println("cpsEvalCheckComplete");
     sdEvalCheck(name, answer, program, hs);
     System.err.println("sdEvalCheckComplete");
     ramSDEvalCheck(name, answer, program, hs);
     System.err.println("ramSDvalCheckComplete");
-//    ramSDCpsEvalCheck(name, answer, program, hs);
-//    System.err.println("ramSDCpsheckComplete");
-//    ramSDCpsEvalCheck(name, answer, program, (int)(((double) hs)*.65));
-//    System.err.println("GCSDCpsheckComplete");
+    ramSDCpsEvalCheck(name, answer, program, hs);
+    System.err.println("ramSDCpsheckComplete");
+    ramSDCpsEvalCheck(name, answer, program, (int)(((double) hs)*.65));
+    System.err.println("GCSDCpsheckComplete");
   }
 
 /*
@@ -179,7 +179,7 @@ public class Assign7Test extends TestCase {
   
 
   public void testBigFib() {
-    System.err.println("Starting testBigFib in Assign7Test");
+    System.err.println("Starting testBigFib in XCAssign7Test");
     try {
       String output = "((0 1) (1 1) (2 2) (3 3) (4 5) (5 8) (6 13) (7 21) (8 34) (9 55) (10 89) (11 144) (12 233) (13 377) (14 610) (15 987) (16 1597) (17 2584) (18 4181) (19 6765) (20 10946)"
         + " (21 17711) (22 28657) (23 46368) (24 75025) (25 121393))"; 
