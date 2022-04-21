@@ -80,12 +80,6 @@ public class Assign7Test extends TestCase {
 //    System.err.println("ramSDvalCheckComplete");
   }
 
-/*
-  private void nonCPSCheck(String name, String answer, String program, int hs) {
-    evalCheck(name, answer, program, hs);
-    sdEvalCheck(name, answer, program, hs*.75);
-  }
-*/
   private void unshadowConvert(String name, String answer, String program) {
    unshadowConvert(name, answer, program, defaultSize);
   }
