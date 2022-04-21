@@ -16,9 +16,9 @@ public class NewAssign6Test extends TestCase {
 //      Interpreter interp = new Interpreter(new StringReader(program));
 //      assertEquals("by-value-value " + name, answer, interp.cpsEval().toString());
 //  }
-  private void SDEvalCheck(String name, String answer, String program) {
+  private void sdEvalCheck(String name, String answer, String program) {
       Interpreter interp = new Interpreter(new StringReader(program));
-      assertEquals("by-value-value " + name, answer, interp.SDEval().toString());
+      assertEquals("by-value-value " + name, answer, interp.sdEval().toString());
   }
   private void cpsSDEvalCheck(String name, String answer, String program) {
       Interpreter interp = new Interpreter(new StringReader(program));
@@ -28,7 +28,7 @@ public class NewAssign6Test extends TestCase {
   private void allEvalCheck(String name, String answer, String program) {
     evalCheck(name, answer, program);
 //    cpsEvalCheck(name, answer, program);
-    SDEvalCheck(name, answer, program);
+    sdEvalCheck(name, answer, program);
 //    cpsSDEvalCheck(name, answer, program);
   }
   

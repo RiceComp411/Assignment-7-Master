@@ -154,7 +154,7 @@ class Interpreter {
   }
   
   /** Parses, checks, and interprets the input embeded in parser using static distance interpreter */
-  public JamVal SDEval() {  // Note: should be named sdEval
+  public JamVal sdEval() {  
     SDAST prog = getSDAST();
     return prog.accept(sdEvaluator); 
   }

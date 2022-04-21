@@ -74,16 +74,10 @@ public class Assign7Test extends TestCase {
     System.out.println("\nStarting " + name + " with heapsize = " + hs);
     evalCheck(name, answer, program, hs);
     System.err.println("evalCheckComplete");
-//    cpsEvalCheck(name, answer, program, hs);
-//    System.err.println("cpsEvalCheckComplete");
     sdEvalCheck(name, answer, program, hs);
     System.err.println("sdEvalCheckComplete");
-    ramSDEvalCheck(name, answer, program, hs);
-    System.err.println("ramSDvalCheckComplete");
-//    ramSDCpsEvalCheck(name, answer, program, hs);
-//    System.err.println("ramSDCpsheckComplete");
-//    ramSDCpsEvalCheck(name, answer, program, (int)(((double) hs)*.65));
-//    System.err.println("GCSDCpsheckComplete");
+//    ramSDEvalCheck(name, answer, program, hs);
+//    System.err.println("ramSDvalCheckComplete");
   }
 
 /*
